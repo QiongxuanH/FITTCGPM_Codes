@@ -3,14 +3,13 @@ All Rights Reserved Permission to use, copy, modify, and distribute this softwar
 This subdirectory contains the following folders:
 
 Standard_Nonlinear_Equations
-
 solve large-scale nonlinear monotone equations, where the runcode is the MATLAB source code demo.m
+
 Pseudo-monotone_Equations
-
 solve nonlinear pseudo-monotone equations, where the runcode is the MATLAB source code demo.m
+
 Decentralized_logistic_regression
-
 solve the regularized decentralized logistic regression, where the runcode is the MATLAB source code demo.m
-SparseSignalRecorvery
 
+SparseSignalRecorvery
 solve the sparse signal recorvery, where the runcode is the MATLAB source code demo.m
