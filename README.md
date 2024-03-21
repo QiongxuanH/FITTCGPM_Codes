@@ -1,0 +1,24 @@
+All Rights Reserved Permission to use, copy, modify, and distribute this software and its documentation for any purpose and without fee is hereby granted, provided that the above copyright notice appear in all copies and that the copyright notice and this permission notice appear in all supporting documentation.
+
+This subdirectory contains the following folders:
+
+Standard_Nonlinear_Equations
+
+solve large-scale nonlinear monotone equations, where the runcode is the MATLAB source code demo.m
+Pseudo-monotone_Equations
+
+solve nonlinear pseudo-monotone equations, where the runcode is the MATLAB source code demo.m
+Decentralized_logistic_regression
+
+solve the regularized decentralized logistic regression, where the runcode is the MATLAB source code demo.m
+SparseSignalRecorvery
+
+solve the sparse signal recorvery, where the runcode is the MATLAB source code demo.m
+Implementation and numerical experience with the above codes are described in the following paper:
+
+
+Jian, J., Yin, J., Tang, C. et al. A family of inertial derivative-free projection methods for constrained nonlinear pseudo-monotone equations with applications. Comp. Appl. Math. 41, 309 (2022). https://doi.org/10.1007/s40314-022-02019-6
+
+If you use/modify this code, please cite the just-mentioned paper appropriately.
+
+Questions/comments/suggestions about the codes are welcome.
