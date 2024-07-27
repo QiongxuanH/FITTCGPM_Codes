@@ -14,5 +14,5 @@ solve the regularized decentralized logistic regression, where the runcode is th
 SparseSignalRecorvery
 solve the sparse signal recorvery, where the runcode is the MATLAB source code demo.m
 
-Image restore problems
-solve the Image restore problems, where the runcode is the MATLAB source code demo.m
+Image restoration problems
+solve the image restoration problems, where the runcode is the MATLAB source code demo_image.m
