@@ -250,21 +250,21 @@ for k=1:k_max
             dku = (-1)*Fxu1+betak*dku-lambdak*yku; 
             dkv = (-1)*Fxv1+betak*dkv-lambdak*ykv;
         case'NHSCG'
-         yku = Fxu1-Fxu0;
-         ykv = Fxv1-Fxv0;
-         tku=1+max(0,-dku'*yku/norm(dku)^2);% yk1=yk+0.01*dk的数值效果没有直接使用yk效果好
-         tkv=1+max(0,-dkv'*ykv/norm(dkv)^2); 
-         wku=yku+tku*dku;
-         wkv=ykv+tkv*dkv;
-         dktwk=dku'*wku+dkv'*wkv;
-         Fxtyk=Fxu1'*yku+Fxv1'*ykv;
-         betak=Fxtyk/(dktwk);
-         Fxtdk = Fxu1'*dku+Fxv1'*dkv;
-         NormFx2=Fxu1'*Fxu1+Fxv1'*Fxv1;
-         NormFx=sqrt(NormFx2);
-         thetak=betak*Fxtdk/NormFx^2;  % 原始的分母是 norm(Fk0)^2  
-         dku=(-1)*Fxu1+betak*dku+thetak*Fxu1;  
-         dkv=(-1)*Fxv1+betak*dkv+thetak*Fxv1;
+            yku = Fxu1-Fxu0;
+            ykv = Fxv1-Fxv0;
+            tku=1+max(0,-dku'*yku/norm(dku)^2);% yk1=yk+0.01*dk的数值效果没有直接使用yk效果好
+            tkv=1+max(0,-dkv'*ykv/norm(dkv)^2); 
+            wku=yku+tku*dku;
+            wkv=ykv+tkv*dkv;
+            dktwk=dku'*wku+dkv'*wkv;
+            Fxtyk=Fxu1'*yku+Fxv1'*ykv;
+            betak=Fxtyk/(dktwk);
+            Fxtdk = Fxu1'*dku+Fxv1'*dkv;
+            NormFx2=Fxu1'*Fxu1+Fxv1'*Fxv1;
+            NormFx=sqrt(NormFx2);
+            thetak=betak*Fxtdk/NormFx^2;   
+            dku=(-1)*Fxu1+betak*dku+thetak*Fxu1;  
+            dkv=(-1)*Fxv1+betak*dkv+thetak*Fxv1;
     end
     Normdk2 = dku'*dku+dkv'*dkv;
     Normdk = sqrt(Normdk2);

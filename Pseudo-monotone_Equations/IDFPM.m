@@ -77,67 +77,19 @@ for k=1:k_max
         dk = -Fy0;
     else
         % update the search direction
-        switch method
-            case 'IGPM'
-                dk = -Fy0; 
-            case 'IHTTCGPM'
-                w0 = Fy0-Fy0_old;
-                NormFy0_old = norm(Fy0_old);
-                Fy0tw0 = Fy0'*w0;
-                Fy0tdk = Fy0'*dk;
-                denominator = max(1.4*Normdk*norm(w0),NormFy0_old^2);
-                betak = Fy0tw0/denominator;
-                thetak = Fy0tdk/denominator;
-                dk = -Fy0+betak*dk-thetak*w0;
-             case 'MITTCGP'
-                 w0 = Fy0-Fy0_old;
-                 sk=y0-y0_old;
-                tk=1+max(0,-dk'*w0/norm(dk)^2);
-                 wk=w0+tk*dk;
-                 Tk=min(0.4,max(0,1-w0'*sk/norm(w0)^2)); % yk1=yk+0.01*dk的数值效果没有直接使用yk效果好   
-                 fenmu=max(norm(Fy0_old)^2,max(0.1*norm(dk)*norm(wk),dk'*wk));%mu=0.1
-                 thetak=Tk*Fy0'*dk/fenmu;  % 原始的分母是 norm(Fk0)^2  
-                 betak=Fy0'*wk/fenmu-norm(wk)^2*Fy0'*dk/fenmu^2; %(max(mu*norm(dk)*norm(Fk),norm(Fk0)^2))
-                 dk=-Fy0+betak*dk+thetak*wk;
-             case 'FITTCGPM-PRP'%第二篇
+        switch method 
+             case 'FITTCGPM-PRP'
                 w0 = Fy0-Fy0_old;
                 betak=Fy0'*w0/(norm(Fy0_old)^2);
                 nuk=norm(Fy0)/max(norm(Fy0_old),(abs(betak))*norm(dk));
                 thetak=-0.055*Fy0'*Fy0_old/norm(Fy0_old)^2;  % 原始的分母是 norm(Fk0)^2  
                 dk=-Fy0+0.001*nuk*betak*dk+thetak*Fy0_old;
-             case'FITTCGPM-DY'%第二篇
+             case'FITTCGPM-DY'
                  w0 = Fy0-Fy0_old;
-                betak=norm(Fy0)^2/(dk'*w0);
-                nuk=norm(Fy0)/max(norm(Fy0_old),(abs(betak))*norm(dk));
-                thetak=-0.055*Fy0'*Fy0_old/norm(Fy0_old)^2;  % 原始的分母是 norm(Fk0)^2  
-                dk=-Fy0+0.001*nuk*betak*dk+thetak*Fy0_old;
-             case 'FITTCGPM-1.5'%第二篇
-%                 w0 = Fy0-Fy0_old;
-                betak=1.5;
-                nuk=norm(Fy0)/max(norm(Fy0_old),(abs(betak))*norm(dk));
-                thetak=-0.055*Fy0'*Fy0_old/norm(Fy0_old)^2;  % 原始的分母是 norm(Fk0)^2  
-                dk=-Fy0+0.001*nuk*betak*dk+thetak*Fy0_old;
-                case 'FITTCGPM-FR'%第二篇
-%                 w0 = Fy0-Fy0_old;
-                betak=norm(Fy0)^2/norm(Fy0_old)^2;
-                nuk=norm(Fy0)/max(norm(Fy0_old),(abs(betak))*norm(dk));
-                thetak=-0.055*Fy0'*Fy0_old/norm(Fy0_old)^2;  % 原始的分母是 norm(Fk0)^2  
-                dk=-Fy0+0.001*nuk*betak*dk+thetak*Fy0_old;
-                  case 'FITTCGPM-HS'%第二篇
-                w0 = Fy0-Fy0_old;
-                betak=Fy0'*w0/(dk'*w0);
-                nuk=norm(Fy0)/max(norm(Fy0_old),(abs(betak))*norm(dk));
-                thetak=-0.055*Fy0'*Fy0_old/norm(Fy0_old)^2;  % 原始的分母是 norm(Fk0)^2  
-                dk=-Fy0+0.001*nuk*betak*dk+thetak*Fy0_old;
-            case 'IHCGPM'
-                w0 = Fy0-Fy0_old;
-                NormFy0_old = norm(Fy0_old);
-                dktw0 = dk'*w0;
-                Fy0tFy0_old = Fy0'*Fy0_old;
-                numerator = NormFy0^2-max(0,NormFy0/NormFy0_old*Fy0tFy0_old);
-                denominator = max(NormFy0^2,max(3*Normdk*NormFy0,dktw0));   
-                betak = numerator/denominator;
-                dk = -Fy0+betak*dk;
+                 betak=norm(Fy0)^2/(dk'*w0);
+                 nuk=norm(Fy0)/max(norm(Fy0_old),(abs(betak))*norm(dk));
+                 thetak=-0.055*Fy0'*Fy0_old/norm(Fy0_old)^2;  %  norm(Fk0)^2  
+                 dk=-Fy0+0.001*nuk*betak*dk+thetak*Fy0_old;
             otherwise
                 disp('Input error! Please check the input method');
         end

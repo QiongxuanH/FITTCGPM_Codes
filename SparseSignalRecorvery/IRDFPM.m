@@ -100,9 +100,6 @@ for k=1:k_max
     else
         % update the search direction
         switch method
-            case 'IRGPM'
-                dku = -Fyuk;
-                dkv = -Fyvk; 
             case 'IRTTCGPM'
                 wuk = Fyuk-Fyuk_old;
                 wvk = Fyvk-Fyvk_old;
@@ -114,116 +111,60 @@ for k=1:k_max
                 betak = Fyktwk/Den;
                 lambdak = Fyktdk/Den;
                 dku = -Fyuk+betak*dku-lambdak*wuk;
-                dkv = -Fyvk+betak*dkv-lambdak*wvk;
-            case'IRTTCGPMN'
-                 suk = yuk-yuk_old;
-                 svk = yvk-yvk_old;
-                 wuk = Fyuk-Fyuk_old;
-                 wvk = Fyvk-Fyvk_old;
-                 NormFyk2=Fyuk'*Fyuk+Fyvk'*Fyvk;
-                 NormFyk=sqrt(NormFyk2);
-                 Normsk2=suk'*suk+svk'*svk;
-                 Normsk=sqrt(Normsk2);
-                 wktsk=wuk'*suk+wvk'*svk; 
-                 lambdak=1+max(0,wktsk/(NormFyk)*(Normsk)^2);
-                 yk1u=wuk+lambdak*norm(Fyuk)*suk;
-                 yk1v=wvk+lambdak*norm(Fyvk)*svk;
-                 dktyk1=dku'*yk1u+dkv'*yk1v;
-%                  Fyktwk = Fyuk'*wuk+Fyvk'*wvk;
-                Fyktdk = Fyuk'*dku+Fyvk'*dkv;
-                Fyktyk1= Fyuk'*yk1u+Fyvk'*yk1v;
-               Normwk2 = wuk'*wuk+wvk'*wvk;
-                Normwk = sqrt(Normwk2);
-                Normyk12=yk1u'*yk1u+yk1v'*yk1v;
-                Normyk1=sqrt(Normyk12);
-               tk=min(0.3,max(0,1-wktsk/Normwk^2)); % yk1=yk+0.01*dk    ֵЧ  û  ֱ  ʹ  ykЧ    
-                 mu=0.2;   
-                 fenmu=max(norm(NormFyk2_old,max(mu*Normdk*Normyk1,dktyk1))); 
-                 thetak=tk*Fyktdk/fenmu;  % ԭʼ ķ ĸ   norm(Fk0)^2  
-                 betak=Fyktyk1/fenmu-Normyk1^2*Fyktdk/fenmu^2; %(max(mu*norm(dk)*norm(Fk),norm(Fk0)^2))
-                 dku=-Fyuk+betak*dku+thetak*yk1u;
-                 dkv = -Fyvk+betak*dkv+thetak*yk1v;     
+                dkv = -Fyvk+betak*dkv-lambdak*wvk;   
              case'MITTCGP'
                  wuk = Fyuk-Fyuk_old;
                  wvk = Fyvk-Fyvk_old;
                  dktwk=dku'*wuk+dkv'*wvk;
-                Normdk2=dku'*dku+dkv'*dkv;
-                Normdk=sqrt(Normdk2);
+                 Normdk2=dku'*dku+dkv'*dkv;
+                 Normdk=sqrt(Normdk2);
                  lambdak=1+max(0,(-1)*dktwk/Normdk2);
                  yk1u=wuk+lambdak*dku;
                  yk1v=wvk+lambdak*dkv;
                  dktyk1=dku'*yk1u+dkv'*yk1v;
-                Fyktdk = Fyuk'*dku+Fyvk'*dkv;
-                Fyktyk1= Fyuk'*yk1u+Fyvk'*yk1v;
+                 Fyktdk = Fyuk'*dku+Fyvk'*dkv;
+                 Fyktyk1= Fyuk'*yk1u+Fyvk'*yk1v;
                  mu=0.1;   
-               Normyk12=yk1u'*yk1u+yk1v'*yk1v;
-                Normyk1=sqrt(Normyk12);
-%                 tk=0.4;
-                fenmu=max(NormFyk2_old,max(mu*Normdk*Normyk1,dktyk1)); 
+                 Normyk12=yk1u'*yk1u+yk1v'*yk1v;
+                 Normyk1=sqrt(Normyk12);
+                 fenmu=max(NormFyk2_old,max(mu*Normdk*Normyk1,dktyk1)); 
                  thetak=0.4*Fyktdk/fenmu;  % ԭʼ ķ ĸ   norm(Fk0)^2  
                  betak=Fyktyk1/fenmu-Normyk1^2*Fyktdk/fenmu^2; %(max(mu*norm(dk)*norm(Fk),norm(Fk0)^2))
                  dku=-Fyuk+betak*dku+thetak*yk1u;
                  dkv = -Fyvk+betak*dkv+thetak*yk1v;
-             case'ITHCGPM'
-                  tau=0.2;
-                 wuk = Fyuk-Fyuk_old;
-                 wvk = Fyvk-Fyvk_old;
-                 dktwk=dku'*wuk+dkv'*wvk;
-               pku=Fyuk-norm(Fyuk)/norm(Fyuk_old)*Fyuk_old;
-                pkv=Fyvk-norm(Fyvk)/norm(Fyvk_old)*Fyvk_old;  
-                 vk=tau*(Normdk^2+NormFyk^2)+max(NormFyk2_old,dktwk);
-                 Fyktpk=Fyuk'*pku+Fyvk'*pkv;
-                Fyktdk = Fyuk'*dku+Fyvk'*dkv;
-                 Normpk2 = pku'*pku+pkv'*pkv;
-                Normpk = sqrt(Normpk2);
-                betak=Fyktpk/vk-Normpk^2*Fyktdk/vk^2;
-                thetak=0.1*Fyktdk\vk; 
-                 dku=-Fyuk+betak*dku+thetak*pku;
-                 dkv = -Fyvk+betak*dkv+thetak*pkv;
              case'FITTCGPM-PRP'
                  wuk = Fyuk-Fyuk_old;
                  wvk = Fyvk-Fyvk_old;
                  NormFyk2=Fyuk'*Fyuk+Fyvk'*Fyvk;
                  NormFyk=sqrt(NormFyk2);
                  NormFyk2_old = Fyuk_old'*Fyuk_old+Fyvk_old'*Fyvk_old;
-                NormFyk_old = sqrt(NormFyk2_old);
-                Normdk2=dku'*dku+dkv'*dkv;
-                Normdk=sqrt(Normdk2);
-                Fyktwk= Fyuk'*wuk+Fyvk'*wvk;
-                betak=Fyktwk/NormFyk2_old;
-                FyktFyk_old=Fyuk'*Fyuk_old+Fyvk'*Fyvk_old;
-                thetak=-0.055*FyktFyk_old/NormFyk2_old;%-0.34545
-                muk=0.001*NormFyk/max(NormFyk_old,(abs(betak))*Normdk);
+                 NormFyk_old = sqrt(NormFyk2_old);
+                 Normdk2=dku'*dku+dkv'*dkv;
+                 Normdk=sqrt(Normdk2);
+                 Fyktwk= Fyuk'*wuk+Fyvk'*wvk;
+                 betak=Fyktwk/NormFyk2_old;
+                 FyktFyk_old=Fyuk'*Fyuk_old+Fyvk'*Fyvk_old;
+                 thetak=-0.055*FyktFyk_old/NormFyk2_old;%-0.34545
+                 muk=0.001*NormFyk/max(NormFyk_old,(abs(betak))*Normdk);
                  dku=-Fyuk+muk*betak*dku+thetak*Fyuk_old;
                  dkv=-Fyvk+muk*betak*dkv+thetak*Fyvk_old;      
-                 case'FITTCGPM-DY'
+             case'FITTCGPM-DY'
                  wuk = Fyuk-Fyuk_old;
                  wvk = Fyvk-Fyvk_old;
                  NormFyk2=Fyuk'*Fyuk+Fyvk'*Fyvk;
                  NormFyk=sqrt(NormFyk2);
                  NormFyk2_old = Fyuk_old'*Fyuk_old+Fyvk_old'*Fyvk_old;
-                NormFyk_old = sqrt(NormFyk2_old);
-                Normdk2=dku'*dku+dkv'*dkv;
-                Normdk=sqrt(Normdk2);
-%                 Fyktwk= Fyuk'*wuk+Fyvk'*wvk;
-                dktwk=dku'*wuk+dkv'*wvk;
-                betak=NormFyk2_old/dktwk;
-                FyktFyk_old=Fyuk'*Fyuk_old+Fyvk'*Fyvk_old;
-                thetak=-0.055*FyktFyk_old/NormFyk2_old;%-0.34545
-                muk=0.001*NormFyk/max(NormFyk_old,abs(betak)*Normdk);
+                 NormFyk_old = sqrt(NormFyk2_old);
+                 Normdk2=dku'*dku+dkv'*dkv;
+                 Normdk=sqrt(Normdk2);
+                 dktwk=dku'*wuk+dkv'*wvk;
+                 betak=NormFyk2_old/dktwk;
+                 FyktFyk_old=Fyuk'*Fyuk_old+Fyvk'*Fyvk_old;
+                 thetak=-0.055*FyktFyk_old/NormFyk2_old;%-0.34545
+                 muk=0.001*NormFyk/max(NormFyk_old,abs(betak)*Normdk);
                  dku=-Fyuk+muk*betak*dku+thetak*Fyuk_old;
                  dkv=-Fyvk+muk*betak*dkv+thetak*Fyvk_old;     
-            case'ISADFM'%2021  Accelerated derivative-free method for nonlinear monotone equations with an application Abdulkarim Hassan Ibrahim1 Poom Kumam1,2,3Auwal Bala Abubakar4,5 Abubakar Adamu2,6
-                 uku=Fzuk_new-Fyuk_old;
-                 ukv=Fzvk_new-Fyvk_old;
-                 Fyktdk = Fyuk'*dku+Fyvk'*dkv;
-                 dktuk=dku'*uku+dkv'*ukv;
-                 Fyktuk=Fyuk'*uku+Fyvk'*ukv;
-                 thetak=Fyktdk/dktuk;  % ԭʼ ķ ĸ   norm(Fk0)^2  
-                 betak=Fyktuk/dktuk; %(max(mu*norm(dk)*norm(Fk),norm(Fk0)^2))
-                 dku=-Fyuk+betak*dku+thetak*uku;  
-                 dkv=-Fyvk+betak*dkv+thetak*ukv;
-             case'ISTCP'%Ibrahim, A.H., Kumam, P ., Sun, M., Chaipunya, P .: Projection method with inertial step for nonlinear equations: Application to signal recovery. J. Ind. Manag. Optim. 19(1), 30 C55 (2023)
+            case'ISTCP'%Ibrahim, A.H., Kumam, P ., Sun, M., Chaipunya, P .: Projection method with inertial step for nonlinear equations: Application to signal recovery. J. Ind. Manag. Optim. 19(1), 30 C55 (2023)
                 FyktFyk_old = Fyuk'*Fyuk_old+Fyvk'*Fyvk_old;
                 Fyktdk = Fyuk'*dku+Fyvk'*dkv;
                 Fyk_oldtdk = Fyuk_old'*dku+Fyvk_old'*dkv;
@@ -231,6 +172,15 @@ for k=1:k_max
                 thetak = Fyktdk/(Fyk_oldtdk); 
                 dku = -Fyuk+betak*dku+thetak*Fyuk_old;
                 dkv = -Fyvk+betak*dkv+thetak*Fyvk_old;  
+             case'IM3TFR1' %Approximation methods with inertial term for large-scale nonlinear monotone equations
+                muk=zuk_new-yuk;%t*dk;
+                mvk=zuk_new-yuk;
+                Fyktmk=Fyuk'*muk+Fyvk'*mvk;
+                NormFyk_old = sqrt(NormFyk2_old);
+                betak=(NormFyk)^2/(NormFyk_old)^2;
+                thetak=Fyktmk/(NormFyk_old)^2;  
+                dku=-Fyuk+betak*muk-thetak*Fyuk;
+                dkv=-Fyvk+betak*mvk-thetak*Fyvk;
         end
     end
     Normdk2 = dku'*dku+dkv'*dkv;

@@ -57,12 +57,12 @@ N = zeros(np,ns);
 % % para1.alpha = 0.1;       % the coefficient of inertial step
 % para1.rho = 1.45;         % the relaxation factor 
 
-para1.Itr_max = ITR_max;
-para1.gamma = 1;         % the initial guess
-para1.sigma = 1;         % the coefficient of line search 
-para1.tau = 0.5;         % the compression ratio
-% para1.alpha = 0.3;       % the coefficient of inertial step
-para1.rho = 1.5;         % the relaxation factor 
+% para1.Itr_max = ITR_max;
+% para1.gamma = 1;         % the initial guess
+% para1.sigma = 1;         % the coefficient of line search 
+% para1.tau = 0.5;         % the compression ratio
+% % para1.alpha = 0.3;       % the coefficient of inertial step
+% para1.rho = 1.5;         % the relaxation factor 
 
 % set parameters for ISTCP
 para2.Itr_max = ITR_max;
@@ -72,14 +72,7 @@ para2.tau = 0.7;         % the compression ratio
 % para1.alpha = 0.1;       % the coefficient of inertial step
 para2.rho = 1;         % the relaxation factor 
 
-% % set parameters for EPM
-% para3.Itr_max = ITR_max;
-% para3.gamma = 1;         % the initial guess
-% para3.sigma = 0.0001;      % the coefficient of line search 
-% para3.tau = 0.55;         % the compression ratio
-% para3.rho = 1.55;         % the relaxation factor
-
-% set parameters for inertial projection methods (MITTCGP)
+% set parameters for inertial projection methods (MITTCGP/FITTCGPM-PRP)
 para3.Itr_max = ITR_max;
 para3.gamma = 0.4;         % the initial guess
 para3.sigma = 0.01;         % the coefficient of line search 

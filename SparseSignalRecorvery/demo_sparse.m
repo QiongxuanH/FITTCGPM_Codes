@@ -50,7 +50,7 @@ para2.tau = 0.5;         % the compression ratio
 para2.rho = 1;           % the relaxation factor 
 
 % parameters for MITTCGP
-para3.Itr_max = ITR_max;
+para3.Itr_max = ITR_max;                                 
 para3.gamma = 0.4;         % the initial guess
 para3.sigma = 0.01;      % the coefficient of line search 
 para3.tau = 0.6;         % the compression ratio
@@ -76,6 +76,13 @@ para5.rho = 1;      % the relaxation factor
 % para5.alpha = 0.1;       % the coefficient of inertial step
 % para5.rho = 1.7606;      % the relaxation factor 
 
+% parameters for IM3TFR1
+para6.Itr_max = ITR_max;
+para6.gamma = 1;         % the initial guess
+para6.sigma = 0.01;      % the coefficient of line search 
+para6.tau = 0.5;         % the compression ratio
+para6.alpha = 0.29;       % the coefficient of inertial step
+para6.rho = 1;      % the relaxation factor 
 % n is the original signal length
 n = 2^12;
 
@@ -136,15 +143,14 @@ disp('Starting IRTTCGPM-DY')
 T3 = Tcpu3(end);
 % USDGPM_mses = mses2(end)
 
+disp('Starting IM3TFR1')
+[x4,mses4,Tcpu4,NF4,NormF4] = IRDFPM(R,b,varrho,f,'IM3TFR1',2,para6);
+T4 = Tcpu4(end);
+
 % disp('Starting ISTCP')
 % [x4,mses4,Tcpu4,NF4,NormF4] = IRDFPM(R,b,varrho,f,'ISTCP',2,para5);
 % T4 = Tcpu4(end);
 % IRT2CGPM_mses = mses3(end)
-
-% disp('Starting TTCGPM')
-% [x4,mses4,Tcpu4,NF4,NormF4] = DFPM(R,b,lambda,f,'TTCGPM',2,para4);
-% T4 = Tcpu4(end);
-% % TTCGPM_mses = mses4(end)
 
 %
 fprintf(1,'\n\n-------------------------------------------------\n')   
@@ -160,6 +166,8 @@ fprintf(1,'\n FITTCGPM-PRP Tcpu: %6.2f secs (%d iterations), MSE of the solution
         T2,length(mses2),mses2(end))
 fprintf(1,'\n FITTCGPM-DY Tcpu: %6.2f secs (%d iterations), MSE of the solution = %6.5e\n',...
         T3,length(mses3),mses3(end))    
+fprintf(1,'\n IM3TFR1 Tcpu: %6.2f secs (%d iterations), MSE of the solution = %6.5e\n',...
+        T4,length(mses4),mses4(end))   
 % fprintf(1,'\n ISTCP Tcpu: %6.2f secs (%d iterations), MSE of the solution = %6.5e\n',...
 %         T4,length(mses4),mses4(end))  
 % fprintf(1,'\n UT2CGPM Tcpu: %6.2f secs (%d iterations), MSE of the solution = %6.3e\n',...
@@ -177,9 +185,9 @@ plot(mses2,'r-','LineWidth',2)
 hold on
 plot(mses3,'g-','LineWidth',2)
 hold on
-% plot(mses4,'k-','LineWidth',2)
-% hold on
-legend('MITTCGP','FITTCGPM-PRP','FITTCGPM-DY');%,'TTCGPM') 
+plot(mses4,'k-','LineWidth',2)
+hold on
+legend('MITTCGP','FITTCGPM-PRP','FITTCGPM-DY','IM3TFR1');%,'TTCGPM') 
 set(gca,'FontName','Times','FontSize',16)
 xlabel('Itr')
 ylabel('MSE')
@@ -195,9 +203,11 @@ plot(Tcpu2,mses2,'r-','LineWidth',2)
 hold on
 plot(Tcpu3,mses3,'g-','LineWidth',2)
 hold on
+plot(Tcpu4,mses4,'k-','LineWidth',2)
+hold on
 % plot(Tcpu4,mses4,'k-','LineWidth',2)
 % hold on
-legend('MITTCGP','FITTCGPM-PRP','FITTCGPM-DY');%,'TTCGPM')
+legend('MITTCGP','FITTCGPM-PRP','FITTCGPM-DY','IM3TFR1');%,'TTCGPM')
 set(gca,'FontName','Times','FontSize',16)
 xlabel('Tcpu')
 ylabel('MSE')
@@ -297,17 +307,17 @@ set(gca,'FontSize',14)
 title(sprintf('FITTCGPM-DY (MSE = %5.6e, Itr=%g, Tcpu=%4.2fs)',mses3(end),length(mses3),Tcpu3(end)))
 axis(v)
 
-% scrsz = get(0,'ScreenSize');
-% % set(7,'Position',[10 scrsz(4)*0.1 0.9*scrsz(3)/2 3*scrsz(4)/4])
-% subplot(5,1,5)
-% plot(x4(:),'LineWidth',1.1)
-% top = max(x4(:));
-% bottom = min(x4(:));
-% v = [0 n+1 bottom-0.05*(top-bottom)  top+0.05*((top-bottom))];
-% set(gca,'FontName','Times')
-% set(gca,'FontSize',14)
-% title(sprintf('ISTCP (MSE = %5.6e, Itr=%g, Tcpu=%4.2fs)',mses4(end),length(mses4),Tcpu4(end)))
-% axis(v)
+scrsz = get(0,'ScreenSize');
+% set(7,'Position',[10 scrsz(4)*0.1 0.9*scrsz(3)/2 3*scrsz(4)/4])
+subplot(5,1,5)
+plot(x4(:),'LineWidth',1.1)
+top = max(x4(:));
+bottom = min(x4(:));
+v = [0 n+1 bottom-0.05*(top-bottom)  top+0.05*((top-bottom))];
+set(gca,'FontName','Times')
+set(gca,'FontSize',14)
+title(sprintf('IM3TFR1 (MSE = %5.6e, Itr=%g, Tcpu=%4.2fs)',mses4(end),length(mses4),Tcpu4(end)))
+axis(v)
 
 % % scrsz = get(0,'ScreenSize');
 % % set(7,'Position',[10 scrsz(4)*0.1 0.9*scrsz(3)/2 3*scrsz(4)/4])

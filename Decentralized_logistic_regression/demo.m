@@ -91,9 +91,28 @@ para5.Itr_max = ITR_max;
 para5.gamma = 1;         % the initial guess
 para5.sigma = 0.01;      % the coefficient of line search 
 para5.tau = 0.7;         % the compression ratio
-para5.rho = 1.8;         % the relaxation factorsigma=0.01;  % sigma=0.01             
+para5.rho = 1.8;         % the relaxation factorsigma=0.01;  % sigma=0.01          
 
+%IM3TFR1 % 2022 Approximation methods with inertial term for large-scale nonlinear monotone equations
+para6.Itr_max = ITR_max;
+para6.gamma = 1;         % the initial guess
+para6.sigma = 0.01;      % the coefficient of line search ok
+para6.tau = 0.5;         % the compression ratio\rho
+para6.rho = 1;         % the relaxation factorsigma=0.01;  % sigma=0.01    
+
+para7.Itr_max = ITR_max; %ISADFM %Accelerated derivative-free method for nonlinear monotone equations with an application
+para7.gamma = 1;         % the initial guess
+para7.sigma = 0.2;      % the coefficient of line search 
+para7.tau = 0.8;         % the compression ratio
+para7.rho = 1.2;         % the relaxation factorsigma=0.01;  % sigma=0.01   
+
+para8.Itr_max = ITR_max;%iner%Inertial Derivative-Free Projection Method for Nonlinear Monotone Operator Equations With Convex Constraints
+para8.gamma = 1;         % the initial guess
+para8.sigma = 0.01;      % the coefficient of line search 
+para8.tau = 0.7;         % the compression ratio
+para8.rho = 1;         % the relaxation factorsigma=0.01;  % sigma=0.01  
 % the regularization parameter
+
 lambda = 1e-1;
 % setup TXT document
 fid_tex=fopen('mytext.txt','w'); 
@@ -116,11 +135,13 @@ for i=1:18
         [T1,NFF1,NI1,G1] = IDFPM(fun,'MITTCGP',1,4,x0,x_1,para4);
         [T2,NFF2,NI2,G2] = IDFPM(fun,'FITTCGPM-PRP',2,1,x0,x_1,para4);
         [T3,NFF3,NI3,G3] = IDFPM(fun,'FITTCGPM-DY',2,1,x0,x_1,para4);
+        [T4,NFF4,NI4,G4] = IM3TFR1(fun,'IM3TFR1',3,2,x0,x_1,para6);
+        %InerDFPI(fun,'IDFPI',3,1,x0,x_1,para8);
 %         ISTCP(fun,'ISTCP',2,2,x0,x_1,para5);
-        progress_r = [progress_r;NI1,NFF1,T1,G1,NI2,NFF2,T2,G2,NI3,NFF3,T3,G3];
+        progress_r = [progress_r;NI1,NFF1,T1,G1,NI2,NFF2,T2,G2,NI3,NFF3,T3,G3,NI4,NFF4,T4,G4];
     end
     TM = mean(progress_r);
-    fprintf(fid_tex,'%s & %d & %d & %.1f/%.1f/%.3f/%.2e & %.1f/%.1f/%.3f/%.2e & %.1f/%.1f/%.3f/%.2e\\\\ \r\n',...
+    fprintf(fid_tex,'%s & %d & %d & %.1f/%.1f/%.3f/%.2e & %.1f/%.1f/%.3f/%.2e & %.1f/%.1f/%.3f/%.2e & %.1f/%.1f/%.3f/%.2e\\\\\\ \r\n',...
                 dataset{i},m,n,TM);%NI1,NFF1,T1,G1,NI2,NFF2,T2,G2); 
 %     fprintf(fid_tex,'%s & %d & %d & %.1f/%.1f/%.3f/%.2e & %.1f/%.1f/%.3f/%.2e\n& %.1f/%.1f/%.3f/%.2e & %.1f/%.1f/%.3f/%.2e\\\\ \r\n',...
 %                 dataset{i},m,n,NI1,NFF1,T1,G1,NI2,NFF2,T2,G2,NI3,NFF3,T3,G3,NI4,NFF4,T4,G4); 

@@ -65,12 +65,6 @@ para2.tau = 0.7;         % the compression ratio
 % para1.alpha = 0.1;       % the coefficient of inertial step
 para2.rho = 1;         % the relaxation factor 
 
-% % set parameters for HCGPM
-% para2.Itr_max = ITR_max;
-% para2.gamma = 1;         % the initial guess
-% para2.sigma = 0.0001;      % the coefficient of line search 
-% para2.tau = 0.5;         % the compression ratio
-% para2.rho = 1.5;         % the relaxation factor 
 % set parameters for inertial projection methods (MITTCGP)
 para3.Itr_max = ITR_max;
 para3.gamma = 0.4;         % the initial guess
@@ -79,23 +73,10 @@ para3.tau = 0.6;         % the compression ratio
 % para1.alpha = 0.3;       % the coefficient of inertial step
 para3.rho = 1.8;         % the relaxation factor 
 
-% 
-% % set parameters for EPM
-% para3.Itr_max = ITR_max;
-% para3.gamma = 1;         % the initial guess
-% para3.sigma = 0.0001;      % the coefficient of line search 
-% para3.tau = 0.55;         % the compression ratio
-% para3.rho = 1.55;         % the relaxation factor 
-
 % run
 for index=1:np
     Num = problem_set(index);
     [name,x0] = init(Num);
-%     [T1,NFF1,NI1,G1] = IDFPM(Num,'MITTCGP',1,4,x0,para3); % acceleration
-%     [T2,NFF2,NI2,G2] = IDFPM(Num,'FITTCGPM-PRP',2,1,x0,para1);
-%     [T3,NFF3,NI3,G3] = IDFPM(Num,'FITTCGPM-DY',2,1,x0,para1);
-%     [T4,NFF4,NI4,G4] = ISTCP(Num,'ISTCP',2,2,x0,para2);
-%     fprintf(fid_tex,'%s & %d/%d/%.3f/%.2e & %d/%d/%.3f/%.2e\n& %d/%d/%.3f/%.2e & %d/%d/%.3f/%.2e\\\\ \r\n', ... 
     [T1,NFF1,NI1,G1] = MITTCGP(Num,'MITTCGP',1,4,x0,para3); % acceleration
     [T2,NFF2,NI2,G2] = IDFPM(Num,'FITTCGPM-PRP',2,1,x0,para1);
     [T3,NFF3,NI3,G3] = IDFPM(Num,'FITTCGPM-DY',2,1,x0,para1);

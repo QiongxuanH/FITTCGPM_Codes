@@ -128,6 +128,11 @@ for k=1:k_max
                 betak=Fy0'*Fy0_old/(Fy0_old'*dk);
                 thetak=Fy0'*dk/(Fy0_old'*dk); 
                 dk=-Fy0+betak*dk+thetak*Fy0_old;
+            case'IM3TFR1'  
+                vk=z0_new-y0;
+                betak=norm(Fy0)^2/norm(Fy0_old)^2;
+                thetak=Fy0'*vk/norm(Fy0_old)^2;  % 原始的分母是 norm(Fk0)^2  
+                dk=-Fy0+betak*vk+thetak*Fy0_old;
             otherwise
                 disp('Input error! Please check the input method');
         end
